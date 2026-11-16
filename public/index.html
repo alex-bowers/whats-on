@@ -5,37 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>What's On in Stoke</title>
   <meta name="description" content="Every show at the Regent Theatre, Victoria Hall and New Vic, night by night.">
-  <meta name="theme-color" content="#0b3326">
+  <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icon-180.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="What's On">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&display=swap">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="masthead">
-    <div class="topbar">
-      <a class="brand" href="/" aria-label="What's On in Stoke, home">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>What's On <span class="brand-sub">Stoke</span></span>
-      </a>
-      <button type="button" class="bell" id="notify" hidden>Turn on notifications</button>
-    </div>
-    <div class="hero">
-      <div class="hero-inner">
-        <p class="eyebrow">Regent Theatre · Victoria Hall · New Vic</p>
-        <h1>What's on in Stoke</h1>
-        <p class="lede">Every show at the city's three big stages, night by night. New listings and on-sale dates are flagged as soon as the venues publish them.</p>
-        <p class="checked" id="checked">Loading…</p>
-      </div>
-    </div>
-    <nav class="tabs" aria-label="Views">
-      <div class="tabs-inner">
+    <div class="bar">
+      <a class="logo" href="/" aria-label="What's On in Stoke, home"><span>What's On</span><span>Stoke</span></a>
+      <nav class="tabs" aria-label="Views">
         <button type="button" id="tab-calendar" class="tab" aria-pressed="true">Calendar</button>
         <button type="button" id="tab-new" class="tab" aria-pressed="false">New &amp; on sale <span class="count" id="new-count" hidden></span></button>
+      </nav>
+      <div class="bar-end">
+        <button type="button" class="bell" id="notify" hidden>Turn on notifications</button>
       </div>
-    </nav>
+    </div>
+    <div class="hero">
+      <div class="hero-main">
+        <h1>What's on in Stoke</h1>
+        <p class="lede">Every show at the Regent Theatre, Victoria Hall and New Vic, night by night. New listings and on-sale dates are flagged as soon as the venues publish them.</p>
+        <p class="checked" id="checked">Loading…</p>
+      </div>
+      <section class="hero-side" id="tonight" aria-label="Tonight">
+        <h2 class="side-title">Tonight</h2>
+        <p class="side-empty">Loading…</p>
+      </section>
+    </div>
   </header>
 
   <main>
@@ -66,17 +69,19 @@
     </section>
 
     <section id="view-new" aria-label="New and on sale" hidden>
-      <div class="stack">
-        <div>
-          <h2>Latest changes</h2>
-          <p class="hint">New shows and ticket changes found since this app started watching.</p>
-          <ul class="feed" id="feed"></ul>
-        </div>
-        <div>
-          <h2>On sale soon</h2>
-          <p class="hint">Announced, but tickets aren't on general sale yet.</p>
-          <ul class="feed" id="soon"></ul>
-        </div>
+      <div class="block-head">
+        <h2>Latest changes</h2>
+        <p class="intro">New shows and ticket changes found since this app started watching.</p>
+      </div>
+      <div class="block block-yellow">
+        <ul class="feed" id="feed"></ul>
+      </div>
+      <div class="block-head">
+        <h2>On sale soon</h2>
+        <p class="intro">Announced, but tickets aren't on general sale yet.</p>
+      </div>
+      <div class="block block-mint">
+        <ul class="feed" id="soon"></ul>
       </div>
       <div class="push-help" id="push-help"></div>
     </section>
