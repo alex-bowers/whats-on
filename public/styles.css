@@ -67,25 +67,20 @@ h1, h2, h3 { font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.0
 }
 .brand { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--ink); text-decoration: none; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.01em; }
 .brand-sub { color: var(--accent-text); }
-.brand-mark { width: 1.6rem; height: 1.6rem; border-radius: 50%; background: conic-gradient(var(--regent) 0 33%, var(--victoria-hall) 0 66%, var(--newvic) 0); box-shadow: inset 0 0 0 0.35rem var(--paper), 0 0 0 2px var(--accent); }
+.brand-mark { width: 1.5rem; height: 1.5rem; background: var(--accent); }
 .bell { background: transparent; border: 2px solid var(--ink); color: var(--ink); border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem; font-weight: 700; }
 .bell:hover { background: var(--ink); color: var(--paper); }
 .bell.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 
-.hero {
-  background:
-    radial-gradient(60rem 30rem at 100% 0%, rgb(2 194 69 / 0.28), transparent 60%),
-    linear-gradient(135deg, var(--hero), color-mix(in srgb, var(--hero) 70%, #000));
-  color: var(--hero-ink);
-}
+.hero { background: var(--hero); color: var(--hero-ink); }
 .hero-inner { max-width: var(--max); margin: 0 auto; padding: clamp(1.75rem, 5vw, 3.5rem) var(--gutter) clamp(1.5rem, 4vw, 2.75rem); }
 .eyebrow { margin: 0 0 0.9rem; font-size: 0.78rem; color: var(--accent); }
 .hero h1 { font-size: clamp(2.4rem, 8vw, 4.75rem); letter-spacing: -0.035em; max-width: 14ch; }
 .lede { margin: 1rem 0 0; max-width: 40rem; font-size: clamp(1rem, 2.2vw, 1.2rem); color: var(--hero-muted); }
 .checked { display: inline-flex; align-items: center; gap: 0.5rem; margin: 1.5rem 0 0; font-size: 0.85rem; color: var(--hero-ink); }
-.checked::before { content: ""; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgb(2 194 69 / 0.25); }
+.checked::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--accent); }
 .checked.warn { color: #ffc2b6; }
-.checked.warn::before { background: #ff8a73; box-shadow: 0 0 0 4px rgb(255 138 115 / 0.25); }
+.checked.warn::before { background: #ff8a73; }
 
 .tabs { border-bottom: 1px solid var(--line); background: var(--paper); position: sticky; top: 0; z-index: 5; }
 .tabs-inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); display: flex; gap: 1.75rem; }
@@ -97,10 +92,11 @@ h1, h2, h3 { font-weight: 800; line-height: 1.1; margin: 0; letter-spacing: -0.0
 main { max-width: var(--max); margin: 0 auto; padding: 1.75rem var(--gutter) calc(4rem + env(safe-area-inset-bottom)); }
 .notice { background: #fde9e4; color: #7a1f10; padding: 0.8rem 1rem; margin: 0 0 1.25rem; border-left: 4px solid #c8361c; }
 .alert {
-  display: block; width: 100%; text-align: left; margin: 0 0 1.5rem; padding: 1rem 1.25rem; border: 0; border-left: 6px solid var(--accent);
-  background: var(--wash); font-weight: 700;
+  display: block; width: 100%; text-align: left; margin: 0 0 1.5rem; padding: 1rem 1.25rem; border: 0;
+  background: var(--accent); color: var(--accent-ink); font-weight: 700;
 }
-.alert::after { content: " →"; color: var(--accent-text); }
+.alert:hover { background: color-mix(in srgb, var(--accent) 88%, #000); }
+.alert::after { content: " →"; }
 
 /* ---------- toolbar and filter panel ---------- */
 .toolbar { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
@@ -188,7 +184,7 @@ main { max-width: var(--max); margin: 0 auto; padding: 1.75rem var(--gutter) cal
   display: flex; flex-direction: column; gap: 0.6rem; width: 100%; text-align: left; background: var(--card);
   border: 1px solid var(--line); border-top: 4px solid var(--venue); padding: 1.1rem 1.2rem 1.2rem;
 }
-.feed-item:hover { border-color: var(--ink); border-top-color: var(--venue); box-shadow: 0 0.75rem 2rem -1rem rgb(0 0 0 / 0.35); }
+.feed-item:hover { border-color: var(--ink); border-top-color: var(--venue); }
 .feed-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 .feed-label { font-size: 0.72rem; color: var(--venue); }
 .feed-title { font-size: 1.35rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
@@ -201,7 +197,7 @@ main { max-width: var(--max); margin: 0 auto; padding: 1.75rem var(--gutter) cal
 .push-help { margin-top: 3rem; padding: 1.25rem 1.5rem; background: var(--wash); color: var(--muted); font-size: 0.92rem; }
 
 /* ---------- dialog ---------- */
-dialog { border: 0; border-radius: 0; padding: 0; width: min(36rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 2rem); background: var(--card); color: var(--ink); box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.4); }
+dialog { border: 0; border-radius: 0; padding: 0; width: min(36rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 2rem); background: var(--card); color: var(--ink); }
 dialog::backdrop { background: rgb(6 24 17 / 0.7); }
 #dialog-body { padding: 1.5rem 1.5rem 1.75rem; position: relative; }
 .close { position: absolute; top: 0.75rem; right: 0.75rem; z-index: 1; width: 2.5rem; height: 2.5rem; border-radius: 50%; border: 0; background: var(--ink); color: var(--paper); font-size: 1.4rem; line-height: 1; }
@@ -226,5 +222,5 @@ dialog h2 { font-size: 1.9rem; padding-right: 2.75rem; }
 .day-list { margin-top: 1rem; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .pill, .feed-item, .bell, .button, .tab { transition: background-color 120ms, border-color 120ms, box-shadow 160ms, color 120ms; }
+  .pill, .feed-item, .bell, .button, .tab { transition: background-color 120ms, border-color 120ms, color 120ms; }
 }
