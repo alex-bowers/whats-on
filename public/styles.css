@@ -52,7 +52,8 @@
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { -webkit-text-size-adjust: 100%; }
+/* The page colour also fills the areas behind the phone's status and navigation bars. */
+html { -webkit-text-size-adjust: 100%; background: var(--paper); }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 var(--sans); }
 button { font: inherit; color: inherit; cursor: pointer; }
 h1, h2, h3 { font-weight: 700; line-height: 1.15; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
