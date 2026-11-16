@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>What's On in Stoke</title>
+  <meta name="description" content="Every show at the Regent Theatre, Victoria Hall and New Vic, night by night.">
+  <meta name="theme-color" content="#1d1a24">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="What's On">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div>
+        <h1>What's On <span>in Stoke</span></h1>
+        <p class="checked" id="checked">Loading…</p>
+      </div>
+      <button type="button" class="bell" id="notify" hidden>Turn on notifications</button>
+    </div>
+    <nav class="tabs" aria-label="Views">
+      <button type="button" id="tab-calendar" class="tab" aria-pressed="true">Calendar</button>
+      <button type="button" id="tab-new" class="tab" aria-pressed="false">New &amp; on sale <span class="count" id="new-count" hidden></span></button>
+    </nav>
+  </header>
+
+  <main>
+    <p class="notice" id="notice" role="status" hidden></p>
+
+    <button type="button" class="alert" id="alert" hidden></button>
+
+    <section id="view-calendar" aria-label="Calendar">
+      <div class="toolbar">
+        <div class="month-nav">
+          <button type="button" id="prev" aria-label="Previous month">‹</button>
+          <h2 id="month-title" aria-live="polite"></h2>
+          <button type="button" id="next" aria-label="Next month">›</button>
+          <button type="button" id="today" class="quiet">Today</button>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Venues"></div>
+      </div>
+      <div class="grid" id="grid" hidden></div>
+      <div class="agenda" id="agenda"></div>
+      <p class="legend">
+        <span><i class="key key-exact"></i> Time confirmed by the venue</span>
+        <span><i class="key key-pattern"></i> Time from the venue's weekly pattern</span>
+        <span><i class="key key-run"></i> Running that day, time not published</span>
+      </p>
+    </section>
+
+    <section id="view-new" aria-label="New and on sale" hidden>
+      <div class="columns">
+        <div>
+          <h2>Latest changes</h2>
+          <p class="hint">New shows and ticket changes found since this app started watching.</p>
+          <ul class="feed" id="feed"></ul>
+        </div>
+        <div>
+          <h2>On sale soon</h2>
+          <p class="hint">Announced, but tickets aren't on general sale yet.</p>
+          <ul class="feed" id="soon"></ul>
+        </div>
+      </div>
+      <div class="push-help" id="push-help"></div>
+    </section>
+  </main>
+
+  <dialog id="dialog" aria-labelledby="dialog-title">
+    <div id="dialog-body"></div>
+  </dialog>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

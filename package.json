@@ -1,0 +1,21 @@
+{
+  "name": "whats-on-stoke",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "types": "wrangler types --strict-vars false",
+    "vapid": "node scripts/generate-vapid-keys.mjs",
+    "db:migrate:local": "wrangler d1 migrations apply whats-on-stoke --local",
+    "db:migrate": "wrangler d1 migrations apply whats-on-stoke --remote"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vitest": "^5.1.0",
+    "wrangler": "^4.162.0"
+  }
+}

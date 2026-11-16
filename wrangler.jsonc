@@ -1,0 +1,57 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "whats-on-stoke",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-11-16",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	// The calendar UI. Anything that is not a file in ./public falls through to the Worker (the /api routes).
+	"assets": {
+		"directory": "./public",
+		"binding": "ASSETS"
+	},
+	// Check the three venues every 30 minutes.
+	"triggers": {
+		"crons": [
+			"*/30 * * * *"
+		]
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "whats-on-stoke",
+			"database_id": "142e6b3c-c870-494a-8afd-7cee6b52156a",
+			"migrations_dir": "migrations"
+		},
+		{
+			"binding": "whats_on_stoke",
+			"database_name": "whats-on-stoke",
+			"database_id": "142e6b3c-c870-494a-8afd-7cee6b52156a",
+			"remote": true
+		}
+	],
+	"vars": {
+		// How many individual show pages to refresh per run. Listing pages use about 11 requests and
+		// notifications a few more. The Workers free plan allows 50 outbound requests per run, so keep
+		// this at 25 or below on free. On the paid plan it can be raised to 150 to refresh everything at once.
+		"DETAIL_BUDGET": "25",
+		// Re-read each show's detail page at most this often.
+		"DETAIL_MAX_AGE_HOURS": "24",
+		// Set to "false" to stop calling ATG's show-details feed (start times, on-sale dates, prices).
+		"ATG_DETAILS": "true",
+		// Contact address sent to push services, required by the Web Push standard. Use your own.
+		"VAPID_SUBJECT": "mailto:you@example.com"
+	},
+	"observability": {
+		"enabled": true,
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1
+		},
+		"traces": {
+			"enabled": true,
+			"head_sampling_rate": 0.1
+		}
+	}
+}
