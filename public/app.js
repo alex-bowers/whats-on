@@ -221,14 +221,14 @@ async function renderCalendar() {
 function renderFilters() {
   $("filters").replaceChildren(...VENUES.map((v) =>
     el("button", {
-      type: "button", class: `chip v-${v.id}`, "aria-pressed": String(!state.hidden.has(v.id)), text: v.label,
+      type: "button", class: `chip v-${v.id}`, "aria-pressed": String(!state.hidden.has(v.id)),
       onclick: () => {
         if (state.hidden.has(v.id)) state.hidden.delete(v.id); else state.hidden.add(v.id);
         store.set("hiddenVenues", [...state.hidden]);
         renderFilters();
         renderCalendar();
       },
-    })));
+    }, el("span", { class: "chip-box", "aria-hidden": "true" }), el("span", { text: v.label }))));
 }
 
 function shiftMonth(by) {
@@ -308,24 +308,38 @@ function openDay(date, entries) {
 
 const EVENT_LABEL = { new_show: "New show", on_sale: "Now on sale", back_on_sale: "Tickets available again", sold_out: "Sold out" };
 
-function feedItem(show, label, when, extra, unseen) {
+/** A show card: a label, the title, then label and value pairs, like an index card. */
+function feedItem(show, label, fields, unseen) {
   return el("li", { class: unseen ? "unseen" : "" },
-    el("button", { type: "button", class: "feed-item", onclick: () => showDialog(...showCard(show, null, null)) },
-      el("span", { class: `feed-label v-${show.source}`, text: label }),
+    el("button", { type: "button", class: `feed-item v-${show.source}`, onclick: () => showDialog(...showCard(show, null, null)) },
+      el("span", { class: "feed-head" },
+        el("span", { class: "feed-label", text: label }),
+        unseen && el("span", { class: "tag tag-new", text: "New" }),
+      ),
       el("span", { class: "feed-title", text: show.title }),
-      el("span", { class: "feed-meta", text: [show.venue, show.date_text, extra].filter(Boolean).join(" · ") }),
-      when && el("span", { class: "feed-when", text: when }),
+      el("dl", { class: "feed-facts" },
+        fields.filter(([, value]) => value).map(([name, value]) => el("div", {}, el("dt", { text: name }), el("dd", { text: value }))),
+      ),
+      el("span", { class: "feed-more", text: "View show" }),
     ));
 }
 
 function renderFeed() {
   const { events, comingSoon } = state.feed;
   $("feed").replaceChildren(...(events.length
-    ? events.map((e) => feedItem(e, EVENT_LABEL[e.type] ?? e.type, `Spotted ${ago(e.created_at)}`, e.type === "new_show" ? statusLabel(e) : null, e.event_id > state.seenEventId))
+    ? events.map((e) => feedItem(e, EVENT_LABEL[e.type] ?? e.type, [
+        ["Venue", e.venue],
+        ["Dates", e.date_text],
+        ["Tickets", e.type === "new_show" ? statusLabel(e) : null],
+        ["Spotted", ago(e.created_at)],
+      ], e.event_id > state.seenEventId))
     : [el("li", { class: "empty", text: "Nothing new yet. New shows will appear here as soon as a venue lists them." })]));
   $("soon").replaceChildren(...(comingSoon.length
-    ? comingSoon.map((s) => feedItem(s, ukDateTime(s.on_sale_at) ? `On sale ${ukDateTime(s.on_sale_at)}` : (s.status_text || "On sale soon"),
-        null, s.presale_at ? `Presale ${ukDateTime(s.presale_at)}` : null, false))
+    ? comingSoon.map((s) => feedItem(s, s.venue, [
+        ["Dates", s.date_text],
+        ["On sale", ukDateTime(s.on_sale_at) ?? (s.status_text || "Soon")],
+        ["Presale", ukDateTime(s.presale_at)],
+      ], false))
     : [el("li", { class: "empty", text: "No upcoming on-sale dates at the moment." })]));
 }
 

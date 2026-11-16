@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>What's On in Stoke</title>
   <meta name="description" content="Every show at the Regent Theatre, Victoria Hall and New Vic, night by night.">
-  <meta name="theme-color" content="#1d1a24">
+  <meta name="theme-color" content="#0b3326">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icon-180.png">
@@ -15,16 +15,26 @@
 </head>
 <body>
   <header class="masthead">
-    <div class="masthead-inner">
-      <div>
-        <h1>What's On <span>in Stoke</span></h1>
-        <p class="checked" id="checked">Loading…</p>
-      </div>
+    <div class="topbar">
+      <a class="brand" href="/" aria-label="What's On in Stoke, home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>What's On <span class="brand-sub">Stoke</span></span>
+      </a>
       <button type="button" class="bell" id="notify" hidden>Turn on notifications</button>
     </div>
+    <div class="hero">
+      <div class="hero-inner">
+        <p class="eyebrow">Regent Theatre · Victoria Hall · New Vic</p>
+        <h1>What's on in Stoke</h1>
+        <p class="lede">Every show at the city's three big stages, night by night. New listings and on-sale dates are flagged as soon as the venues publish them.</p>
+        <p class="checked" id="checked">Loading…</p>
+      </div>
+    </div>
     <nav class="tabs" aria-label="Views">
-      <button type="button" id="tab-calendar" class="tab" aria-pressed="true">Calendar</button>
-      <button type="button" id="tab-new" class="tab" aria-pressed="false">New &amp; on sale <span class="count" id="new-count" hidden></span></button>
+      <div class="tabs-inner">
+        <button type="button" id="tab-calendar" class="tab" aria-pressed="true">Calendar</button>
+        <button type="button" id="tab-new" class="tab" aria-pressed="false">New &amp; on sale <span class="count" id="new-count" hidden></span></button>
+      </div>
     </nav>
   </header>
 
@@ -41,7 +51,10 @@
           <button type="button" id="next" aria-label="Next month">›</button>
           <button type="button" id="today" class="quiet">Today</button>
         </div>
-        <div class="filters" id="filters" role="group" aria-label="Venues"></div>
+        <div class="filter-panel">
+          <span class="filter-label" id="filter-label">Filter by venue</span>
+          <div class="filters" id="filters" role="group" aria-labelledby="filter-label"></div>
+        </div>
       </div>
       <div class="grid" id="grid" hidden></div>
       <div class="agenda" id="agenda"></div>
@@ -53,7 +66,7 @@
     </section>
 
     <section id="view-new" aria-label="New and on sale" hidden>
-      <div class="columns">
+      <div class="stack">
         <div>
           <h2>Latest changes</h2>
           <p class="hint">New shows and ticket changes found since this app started watching.</p>
