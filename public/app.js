@@ -440,7 +440,7 @@ async function setupPush() {
     return;
   }
 
-  const registration = await navigator.serviceWorker.register("/sw.js");
+  const registration = await navigator.serviceWorker.ready;
   const refresh = async () => {
     const sub = await registration.pushManager.getSubscription();
     button.hidden = false;
@@ -477,9 +477,42 @@ async function setupPush() {
   await refresh();
 }
 
+// ---------- installing ----------
+
+// The service worker is what lets the app be installed and open without a connection, so register
+// it on every visit, whether or not notifications are set up.
+function registerServiceWorker() {
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+}
+
+// Android browsers offer to install the app through this event. Show an Install button when they do.
+function setupInstall() {
+  const button = $("install");
+  let offer = null;
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    offer = event;
+    button.hidden = false;
+  });
+  button.addEventListener("click", async () => {
+    if (!offer) return;
+    button.hidden = true;
+    offer.prompt();
+    const { outcome } = await offer.userChoice.catch(() => ({ outcome: "dismissed" }));
+    if (outcome !== "accepted") button.hidden = false;
+    else offer = null;
+  });
+  window.addEventListener("appinstalled", () => {
+    offer = null;
+    button.hidden = true;
+  });
+}
+
 // ---------- start ----------
 
 async function start() {
+  registerServiceWorker();
+  setupInstall();
   const now = new Date();
   state.today = fromDate(now);
   state.month = { y: now.getFullYear(), m: now.getMonth() + 1 };
