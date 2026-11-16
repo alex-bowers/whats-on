@@ -66,6 +66,12 @@ speed that up.
 Everything found on the first check is treated as the starting point. Alerts begin with the first
 show that appears after that.
 
+### Install on your phone
+
+On Android, open the app in Chrome and tap **Install app** at the top (or Install app in Chrome's
+menu). On iPhone, open it in Safari, tap Share, then Add to Home Screen. Once installed it opens in its
+own window, like any other app.
+
 ### Phone notifications
 
 Open the app on your phone and tap **Turn on notifications**. On iPhone, first add the app to your

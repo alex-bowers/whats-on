@@ -88,15 +88,16 @@ h1, h2, h3 { font-weight: 700; line-height: 1.15; margin: 0; letter-spacing: -0.
 }
 .tab[aria-pressed="true"] { border-bottom-color: var(--green); }
 .count { display: inline-grid; place-items: center; min-width: 1.5rem; height: 1.5rem; padding: 0 0.35rem; background: var(--yellow); color: var(--on-block); border: 2px solid #000; font-size: 0.8rem; }
-.bar-end { display: flex; align-items: center; padding: 0 1rem; border-left: var(--border) solid var(--rule); }
-.bar-end:has(> [hidden]) { display: none; }
+.bar-end { display: flex; align-items: center; gap: 0.5rem; padding: 0 1rem; border-left: var(--border) solid var(--rule); }
+.bar-end:not(:has(> :not([hidden]))) { display: none; }
 .bell { min-height: 2.5rem; font-size: 0.8rem; }
 .bell.on { background: var(--green); color: var(--on-block); }
 @media (max-width: 40rem) {
   .bar { grid-template-columns: auto 1fr; }
   .tabs { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; padding: 0 1rem; border-top: var(--border) solid var(--rule); gap: 1.5rem; }
   .tab { padding: 0.7rem 0; font-size: 0.9rem; }
-  .bar-end { justify-content: flex-end; }
+  .bar-end { flex-wrap: wrap; justify-content: flex-end; padding: 0.5rem 0.75rem; }
+  .bar-end .bell { padding: 0 0.7rem; }
 }
 
 .hero { display: grid; border: var(--border) solid var(--rule); border-top: 0; }
