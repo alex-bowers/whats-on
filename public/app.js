@@ -141,6 +141,29 @@ function kindOf(entry) {
   return "exact";
 }
 
+// ---------- rendering: tonight ----------
+
+/** The hero's side panel: what's on tonight, or the next night with something on. */
+function renderTonight(days) {
+  const next = [...days.keys()].filter((d) => d >= state.today).sort()[0];
+  const panel = $("tonight");
+  if (!next) {
+    panel.replaceChildren(el("h2", { class: "side-title", text: "Tonight" }), el("p", { class: "side-empty", text: "Nothing more listed this month." }));
+    return;
+  }
+  const entries = days.get(next);
+  panel.replaceChildren(
+    el("h2", { class: "side-title", text: next === state.today ? "Tonight" : `Next up · ${longDay(next)}` }),
+    el("ul", { class: "side-list" }, entries.slice(0, 4).map((entry) => el("li", {},
+      el("button", { type: "button", class: `side-item v-${entry.show.source}`, onclick: () => openShow(entry, next) },
+        el("span", { class: "side-time", text: kindOf(entry) === "run" ? "All day" : timesText(entry) }),
+        el("span", { class: "side-show", text: entry.show.title }),
+        el("span", { class: "side-venue", text: entry.show.venue }),
+      )))),
+    ...(entries.length > 4 ? [el("button", { type: "button", class: "side-more", text: `+${entries.length - 4} more`, onclick: () => openDay(next, entries) })] : []),
+  );
+}
+
 // ---------- rendering: calendar ----------
 
 function pill(entry, date) {
@@ -216,19 +239,21 @@ async function renderCalendar() {
   renderGrid(state.month, days);
   renderAgenda(state.month, days);
   $("grid").hidden = false;
+  const [ty, tm] = [Number(state.today.slice(0, 4)), Number(state.today.slice(5, 7))];
+  if (state.month.y === ty && state.month.m === tm) renderTonight(days);
 }
 
 function renderFilters() {
   $("filters").replaceChildren(...VENUES.map((v) =>
     el("button", {
-      type: "button", class: `chip v-${v.id}`, "aria-pressed": String(!state.hidden.has(v.id)), text: v.label,
+      type: "button", class: `chip v-${v.id}`, "aria-pressed": String(!state.hidden.has(v.id)),
       onclick: () => {
         if (state.hidden.has(v.id)) state.hidden.delete(v.id); else state.hidden.add(v.id);
         store.set("hiddenVenues", [...state.hidden]);
         renderFilters();
         renderCalendar();
       },
-    })));
+    }, el("span", { class: "chip-box", "aria-hidden": "true" }), el("span", { text: v.label }))));
 }
 
 function shiftMonth(by) {
@@ -308,24 +333,46 @@ function openDay(date, entries) {
 
 const EVENT_LABEL = { new_show: "New show", on_sale: "Now on sale", back_on_sale: "Tickets available again", sold_out: "Sold out" };
 
-function feedItem(show, label, when, extra, unseen) {
+/** A show card: picture (or a block in the venue's colour), title, label and value pairs, and a corner button. */
+function feedItem(show, label, fields, unseen) {
+  const image = safeUrl(show.image);
   return el("li", { class: unseen ? "unseen" : "" },
-    el("button", { type: "button", class: "feed-item", onclick: () => showDialog(...showCard(show, null, null)) },
-      el("span", { class: `feed-label v-${show.source}`, text: label }),
-      el("span", { class: "feed-title", text: show.title }),
-      el("span", { class: "feed-meta", text: [show.venue, show.date_text, extra].filter(Boolean).join(" · ") }),
-      when && el("span", { class: "feed-when", text: when }),
+    el("article", { class: `feed-item v-${show.source}` },
+      el("div", { class: "feed-media" },
+        image
+          ? el("img", { src: image, alt: "", loading: "lazy", onerror: (e) => e.target.remove() })
+          : null,
+        el("span", { class: "feed-venue", text: show.venue }),
+      ),
+      el("div", { class: "feed-body" },
+        el("p", { class: "feed-head" },
+          el("span", { class: "feed-label", text: label }),
+          unseen && el("span", { class: "tag tag-new", text: "New" }),
+        ),
+        el("h3", { class: "feed-title", text: show.title }),
+        el("dl", { class: "feed-facts" },
+          fields.filter(([, value]) => value).map(([name, value]) => el("div", {}, el("dt", { text: name }), el("dd", { text: value }))),
+        ),
+      ),
+      el("button", { type: "button", class: "corner-button", text: "View show", onclick: () => showDialog(...showCard(show, null, null)) }),
     ));
 }
 
 function renderFeed() {
   const { events, comingSoon } = state.feed;
   $("feed").replaceChildren(...(events.length
-    ? events.map((e) => feedItem(e, EVENT_LABEL[e.type] ?? e.type, `Spotted ${ago(e.created_at)}`, e.type === "new_show" ? statusLabel(e) : null, e.event_id > state.seenEventId))
+    ? events.map((e) => feedItem(e, EVENT_LABEL[e.type] ?? e.type, [
+        ["Dates", e.date_text],
+        ["Tickets", e.type === "new_show" ? statusLabel(e) : null],
+        ["Spotted", ago(e.created_at)],
+      ], e.event_id > state.seenEventId))
     : [el("li", { class: "empty", text: "Nothing new yet. New shows will appear here as soon as a venue lists them." })]));
   $("soon").replaceChildren(...(comingSoon.length
-    ? comingSoon.map((s) => feedItem(s, ukDateTime(s.on_sale_at) ? `On sale ${ukDateTime(s.on_sale_at)}` : (s.status_text || "On sale soon"),
-        null, s.presale_at ? `Presale ${ukDateTime(s.presale_at)}` : null, false))
+    ? comingSoon.map((s) => feedItem(s, "On sale soon", [
+        ["Dates", s.date_text],
+        ["On sale", ukDateTime(s.on_sale_at) ?? (s.status_text || "Soon")],
+        ["Presale", ukDateTime(s.presale_at)],
+      ], false))
     : [el("li", { class: "empty", text: "No upcoming on-sale dates at the moment." })]));
 }
 

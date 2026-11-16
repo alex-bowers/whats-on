@@ -10,7 +10,7 @@ self.addEventListener("push", (event) => {
       body: data.body || "There's something new on the calendar.",
       tag: data.tag,
       icon: "/icon-192.png",
-      badge: "/icon-192.png",
+      badge: "/badge-96.png",
       data: { url: data.url || "/?view=new" },
     }),
   );
