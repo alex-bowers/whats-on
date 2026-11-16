@@ -15,9 +15,18 @@
   --mint: #e8f6ea;
   --grey: #f2f2f2;
   --on-block: #000000;
-  --regent: #b3203a;
-  --victoria-hall: #006f80;
+  /* Venue colours: Regent Theatre and Victoria Hall share the hero's blue and green, so the
+     hero blocks double as a key for the calendar. "-ink" is a darker shade for text on white,
+     "-on" is the text colour that sits on the block. */
+  --regent: var(--blue);
+  --regent-ink: #0b6fa4;
+  --regent-on: #000000;
+  --victoria-hall: var(--green);
+  --victoria-hall-ink: #1f7a2c;
+  --victoria-hall-on: #000000;
   --newvic: #5b3fa3;
+  --newvic-ink: #5b3fa3;
+  --newvic-on: #ffffff;
   --border: 3px;
   --sans: "Figtree", "Helvetica Neue", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   --gutter: clamp(1rem, 4vw, 2.5rem);
@@ -34,9 +43,10 @@
     --line: #333333;
     --mint: #17301b;
     --grey: #1a1a1a;
-    --regent: #f07086;
-    --victoria-hall: #4fc6d6;
-    --newvic: #ab90f2;
+    --regent-ink: var(--blue);
+    --victoria-hall-ink: var(--green);
+    --newvic: #8f6fe6;
+    --newvic-ink: #ab90f2;
   }
 }
 
@@ -48,9 +58,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 h1, h2, h3 { font-weight: 700; line-height: 1.15; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 
-.v-regent { --venue: var(--regent); }
-.v-victoria-hall { --venue: var(--victoria-hall); }
-.v-newvic { --venue: var(--newvic); }
+.v-regent { --venue: var(--regent); --venue-ink: var(--regent-ink); --venue-on: var(--regent-on); }
+.v-victoria-hall { --venue: var(--victoria-hall); --venue-ink: var(--victoria-hall-ink); --venue-on: var(--victoria-hall-on); }
+.v-newvic { --venue: var(--newvic); --venue-ink: var(--newvic-ink); --venue-on: var(--newvic-on); }
 
 /* Outlined box button: uppercase, thick black edge, square corners. */
 .bell, .month-nav button, .button, .corner-button, .earlier, .side-more {
@@ -77,7 +87,7 @@ h1, h2, h3 { font-weight: 700; line-height: 1.15; margin: 0; letter-spacing: -0.
   font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;
 }
 .tab[aria-pressed="true"] { border-bottom-color: var(--green); }
-.count { display: inline-grid; place-items: center; min-width: 1.5rem; height: 1.5rem; padding: 0 0.35rem; background: var(--green); color: var(--on-block); border: 2px solid #000; font-size: 0.8rem; }
+.count { display: inline-grid; place-items: center; min-width: 1.5rem; height: 1.5rem; padding: 0 0.35rem; background: var(--yellow); color: var(--on-block); border: 2px solid #000; font-size: 0.8rem; }
 .bar-end { display: flex; align-items: center; padding: 0 1rem; border-left: var(--border) solid var(--rule); }
 .bar-end:has(> [hidden]) { display: none; }
 .bell { min-height: 2.5rem; font-size: 0.8rem; }
@@ -137,7 +147,7 @@ main { max-width: var(--max); margin: 0 auto; padding: 2rem var(--gutter) calc(4
 .filters { display: flex; flex-wrap: wrap; gap: 0 1rem; padding: 0.15rem 1rem; }
 .chip { display: inline-flex; align-items: center; gap: 0.5rem; border: 0; background: transparent; padding: 0.4rem 0.1rem; min-height: 2.5rem; font-size: 0.95rem; font-weight: 700; }
 .chip-box { display: inline-grid; place-items: center; width: 1.2rem; height: 1.2rem; border: 2px solid var(--rule); background: var(--venue); }
-.chip-box::after { content: ""; width: 0.55rem; height: 0.3rem; border: solid #fff; border-width: 0 0 2px 2px; transform: translateY(-1px) rotate(-45deg); }
+.chip-box::after { content: ""; width: 0.55rem; height: 0.3rem; border: solid var(--venue-on); border-width: 0 0 2px 2px; transform: translateY(-1px) rotate(-45deg); }
 .chip[aria-pressed="false"] { color: var(--muted); }
 .chip[aria-pressed="false"] .chip-box { background: transparent; }
 .chip[aria-pressed="false"] .chip-box::after { display: none; }
@@ -146,19 +156,19 @@ main { max-width: var(--max); margin: 0 auto; padding: 2rem var(--gutter) calc(4
 /* ---------- pills ---------- */
 .pill {
   display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 0 0.45rem; width: 100%; text-align: left;
-  border: 0; border-left: 5px solid var(--venue); border-radius: 0; background: color-mix(in srgb, var(--venue) 12%, var(--card));
+  border: 0; border-left: 5px solid var(--venue); border-radius: 0; background: color-mix(in srgb, var(--venue) 16%, var(--card));
   padding: 0.3rem 0.45rem; font-size: 0.82rem; line-height: 1.25;
 }
-.pill:hover { background: color-mix(in srgb, var(--venue) 24%, var(--card)); }
-.pill-time { font-variant-numeric: tabular-nums; font-weight: 800; color: var(--venue); white-space: nowrap; }
+.pill:hover { background: color-mix(in srgb, var(--venue) 30%, var(--card)); }
+.pill-time { font-variant-numeric: tabular-nums; font-weight: 800; color: var(--venue-ink); white-space: nowrap; }
 .pill-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
 .pill.k-pattern { border-left-style: dashed; }
 .pill.k-run { border-left-style: dotted; }
 .pill.k-run .pill-time { font-weight: 500; font-style: italic; }
 .pill.sold .pill-title { text-decoration: line-through; opacity: 0.6; }
 .tag { font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.1rem 0.35rem; background: var(--grey); color: var(--ink); border: 1.5px solid var(--rule); white-space: nowrap; }
-.tag-new { background: var(--green); color: var(--on-block); border-color: #000; }
-.tag-soon { background: var(--yellow); color: var(--on-block); border-color: #000; }
+.tag-new { background: var(--yellow); color: var(--on-block); border-color: #000; }
+.tag-soon { background: var(--card); color: var(--ink); }
 .pill .tag { grid-column: 3; }
 .pill .tag + .tag { display: none; }
 
@@ -180,14 +190,14 @@ main { max-width: var(--max); margin: 0 auto; padding: 2rem var(--gutter) calc(4
 .cell.other .cell-date { opacity: 0.4; }
 .cell.past .pill { opacity: 0.5; }
 .cell-date { font-size: 1.05rem; font-weight: 800; padding: 0 0.15rem 0.2rem; }
-.cell.is-today .cell-date { align-self: flex-start; padding: 0.05rem 0.45rem; background: var(--blue); color: var(--on-block); border: 2px solid #000; }
+.cell.is-today .cell-date { align-self: flex-start; padding: 0.05rem 0.45rem; background: var(--yellow); color: var(--on-block); border: 2px solid #000; }
 .earlier { width: 100%; margin-bottom: 1.25rem; }
 .more { border: 0; background: transparent; font-weight: 800; font-size: 0.78rem; text-align: left; padding: 0.2rem 0.4rem; text-transform: uppercase; text-decoration: underline; }
 
 /* ---------- agenda (phones) ---------- */
 .agenda-day { margin-bottom: 1.5rem; }
 .agenda-day h3 { position: sticky; top: 0; z-index: 1; background: var(--paper); padding: 0.6rem 0; font-size: 1.2rem; border-bottom: var(--border) solid var(--rule); margin-bottom: 0.6rem; }
-.agenda-day.is-today h3 { background: var(--blue); color: var(--on-block); padding-left: 0.6rem; border: var(--border) solid var(--rule); }
+.agenda-day.is-today h3 { background: var(--yellow); color: var(--on-block); padding-left: 0.6rem; border: var(--border) solid var(--rule); }
 .agenda-day.past { opacity: 0.55; }
 .agenda .pill, .day-list .pill { font-size: 0.98rem; padding: 0.7rem 0.8rem; margin-bottom: 0.45rem; min-height: 3rem; }
 .agenda .pill-title, .day-list .pill-title { white-space: normal; }
@@ -215,8 +225,8 @@ main { max-width: var(--max); margin: 0 auto; padding: 2rem var(--gutter) calc(4
 .feed-item { position: relative; display: flex; flex-direction: column; width: 100%; background: var(--card); border: var(--border) solid var(--rule); }
 .feed-media { position: relative; aspect-ratio: 16 / 9; background: var(--venue); border-bottom: var(--border) solid var(--rule); overflow: hidden; }
 .feed-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.feed-venue { position: absolute; left: 1.25rem; bottom: 1rem; color: #fff; font-size: 1.35rem; font-weight: 800; line-height: 1.1; }
-.feed-media img + .feed-venue { left: 0; bottom: 0; padding: 0.35rem 0.75rem; background: #000; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.feed-venue { position: absolute; left: 1.25rem; bottom: 1rem; color: var(--venue-on); font-size: 1.35rem; font-weight: 800; line-height: 1.1; }
+.feed-media img + .feed-venue { left: 0; bottom: 0; padding: 0.35rem 0.75rem; background: #000; color: #fff; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
 .feed-body { padding: 1.25rem 1.5rem 4.25rem; display: flex; flex-direction: column; gap: 0.6rem; }
 .feed-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin: 0; }
 .feed-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
@@ -234,7 +244,7 @@ dialog::backdrop { background: rgb(0 0 0 / 0.6); }
 .close { position: absolute; top: 0; right: 0; z-index: 1; width: 3rem; height: 3rem; border: 0; border-left: var(--border) solid var(--rule); border-bottom: var(--border) solid var(--rule); border-radius: 0; background: var(--yellow); color: #000; font-size: 1.6rem; line-height: 1; }
 .close:hover { background: var(--ink); color: var(--paper); }
 .show-image { display: block; width: calc(100% + 3.5rem); margin: -1.75rem -1.75rem 1.5rem; aspect-ratio: 16 / 9; object-fit: cover; background: var(--line); border-bottom: var(--border) solid var(--rule); }
-.venue { margin: 0 0 0.4rem; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--venue); padding-right: 3rem; }
+.venue { margin: 0 0 0.4rem; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--venue-ink); padding-right: 3rem; }
 dialog h2 { font-size: 2rem; padding-right: 2.75rem; }
 .tags { margin: 0.75rem 0 0; display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .tags:empty { display: none; }
